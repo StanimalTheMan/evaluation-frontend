@@ -1,5 +1,9 @@
 <template>
-  <v-data-table :headers="cadetCoursesTakenHeaders" :items="cadetData">
+  <v-data-table
+    :headers="cadetCoursesTakenHeaders"
+    :items="cadetData"
+    :hide-default-footer="true"
+  >
     <v-data-table :headers="cadetCoursesTakenHeaders" :items="cadetData">
     </v-data-table>
   </v-data-table>

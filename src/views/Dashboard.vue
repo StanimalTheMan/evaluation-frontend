@@ -4,9 +4,18 @@
     :items="reviewsByYear"
     :single-expand="singleExpand"
     :expanded.sync="expanded"
+    :hide-default-footer="true"
     item-key="year"
     class="elevation-1"
   >
+    <template v-slot:top>
+      <v-card>
+        <v-card-text v-if="departmentHead"
+          >Department Head Recommendation</v-card-text
+        >
+        <v-card-text v-else>Regular</v-card-text>
+      </v-card>
+    </template>
     <template v-slot:item="{ item, expand, isExpanded }">
       <tr>
         <td class="d-block d-sm-table-cell">
@@ -42,6 +51,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Cadets from "../components/Cadets";
 
 export default {
@@ -53,10 +63,18 @@ export default {
       expanded: [],
       singleExpand: true,
       dashboardHeaders: [
-        { text: "YEAR GROUP", value: "year" },
-        { text: "TOTAL CADETS", value: "totalCadets" },
-        { text: "TOTAL TO REVIEW", value: "totalToReview" },
-        { text: "Available Actions" }, // does the value have to be "View Details"?
+        { text: "YEAR GROUP", value: "year", class: "black white--text" },
+        {
+          text: "TOTAL CADETS",
+          value: "totalCadets",
+          class: "black white--text",
+        },
+        {
+          text: "TOTAL TO REVIEW",
+          value: "totalToReview",
+          class: "black white--text",
+        },
+        { text: "Available Actions", class: "black white--text" }, // does the value have to be "View Details"?
       ],
       isGetCadets: false,
       reviewsByYear: [],
@@ -66,6 +84,11 @@ export default {
     getCadets() {
       this.isGetCadets = true;
     },
+  },
+  computed: {
+    ...mapGetters({
+      departmentHead: "isDepartmentHead",
+    }),
   },
   created() {
     const xhr = new XMLHttpRequest();

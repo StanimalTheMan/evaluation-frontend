@@ -4,6 +4,7 @@
     :items="cadets"
     :single-expand="singleExpand"
     :expanded.sync="expanded"
+    :hide-default-footer="true"
     item-key="cadet_id"
     class="elevation-1"
   >
@@ -25,10 +26,64 @@
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td v-if="isGetCadetDataAndCourses" :colspan="headers.length">
-        <v-card>
-          {{ cadets[item.cadet_id - 1].SATM }}
-        </v-card>
-        <cadet-courses-data :cadetID="item.cadet_id"></cadet-courses-data>
+        <v-container>
+          <v-row>
+            <v-col cols="3">
+              <v-img></v-img>
+            </v-col>
+            <v-col cols="9">
+              <v-card>
+                <v-row>
+                  <v-col cols="3">
+                    <v-card-text>Class Year: 2020</v-card-text>
+                    <v-card-text>Company: B | Regiment: 2</v-card-text>
+                    <v-card-text
+                      >Major 1: SYSTEMS ENGINEERING MAJOR</v-card-text
+                    >
+                    <v-card-text>Major 2: None Selected</v-card-text>
+                  </v-col>
+                  <v-spacer></v-spacer>
+                  <v-col cols="3">
+                    <v-card>Failure</v-card>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-card-text
+                    ><span class="font-weight-bold">SAT-MATH:</span>
+                    {{ cadets[item.cadet_id - 1].SATM }}</v-card-text
+                  >
+                  <v-card-text>SAT-VERB: 530</v-card-text>
+                </v-row>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-icon>mdi-help</v-icon>
+              Department Head Recommendations
+              <v-select label="-- Select --"></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-icon>mdi-help</v-icon>
+              Board Decision
+              <v-select label="-- Select --"></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              Department Head Comments (characters remaining = 700)
+              <v-textarea outlined></v-textarea>
+            </v-col>
+            <v-col cols="6">
+              Board Decision Comments (characters remaining = 700)
+              <v-textarea outlined></v-textarea>
+            </v-col>
+          </v-row>
+          <v-row justify="end">
+            <v-btn>Submit</v-btn>
+          </v-row>
+          <cadet-courses-data :cadetID="item.cadet_id"></cadet-courses-data>
+        </v-container>
       </td>
     </template>
   </v-data-table>

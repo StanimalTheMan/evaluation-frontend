@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Dashboard from "../views/Dashboard";
 import Home from "../views/Home";
 import Login from "../views/Login";
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,19 @@ const router = new VueRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {});
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresLogin)) {
+    if (!store.getters.getIsAuthenticated) {
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 export default router;
