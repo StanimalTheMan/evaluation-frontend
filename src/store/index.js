@@ -5,8 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isAuthenticated: false,
-    role: null,
+    isAuthenticated: !!localStorage.getItem("role"),
+    role: localStorage.getItem("role"),
+    username: localStorage.getItem("username"),
   },
   getters: {
     getIsAuthenticated: (state) => {
@@ -19,12 +20,13 @@ export default new Vuex.Store({
   mutations: {
     login(state, sessionData) {
       state.isAuthenticated = true;
-      state.role = sessionData;
+      state.role = sessionData.role;
+      state.username = sessionData.username;
     },
     logout(state) {
-      console.log("lgout");
       state.isAuthenticated = false;
       state.role = null;
+      state.username = null;
     },
   },
   actions: {
@@ -40,8 +42,13 @@ export default new Vuex.Store({
 
         xhr.onload = function() {
           if (xhr.status == 200) {
-            commit("login", xhr.response);
-            resolve(xhr.response);
+            const response = JSON.parse(xhr.response);
+            localStorage.setItem("role", response.role); // probably not best aside from xss
+            localStorage.setItem("username", response.username);
+            console.log(localStorage.getItem("role"));
+            console.log(localStorage.getItem("username"));
+            commit("login", response);
+            resolve();
           }
         };
 
@@ -54,17 +61,29 @@ export default new Vuex.Store({
       });
     },
     logout({ commit }) {
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
+      return new Promise(function(resolve, reject) {
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
 
-      xhr.open("POST", "http://127.0.0.1:5000/logout");
-      xhr.responseType = "json";
+        xhr.open("POST", "http://127.0.0.1:5000/logout");
+        xhr.responseType = "json";
 
-      xhr.send();
+        xhr.send();
 
-      xhr.onload = function() {
-        commit("logout");
-      };
+        xhr.onload = function() {
+          localStorage.removeItem("role");
+          localStorage.removeItem("username");
+          commit("logout");
+          resolve();
+        };
+
+        xhr.onerror = function() {
+          reject({
+            status: xhr.status,
+            statusText: xhr.statusText,
+          });
+        };
+      });
     },
   },
 });

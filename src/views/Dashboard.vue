@@ -78,6 +78,12 @@ export default {
       ],
       isGetCadets: false,
       reviewsByYear: [],
+      // reviewsByYear: [
+      //   { year: 2020, totalCadets: 29, totalToReview: 29 },
+      //   { year: 2021, totalCadets: 67, totalToReview: 67 },
+      //   { year: 2022, totalCadets: 122, totalToReview: 122 },
+      //   { year: 2023, totalCadets: 157, totalToReview: 157 },
+      // ],
     };
   },
   methods: {
@@ -94,7 +100,6 @@ export default {
     const xhr = new XMLHttpRequest();
 
     xhr.open("GET", "http://127.0.0.1:5000/years/summary");
-    // xhr.setRequestHeader("Accept", "application/json");
     xhr.responseType = "json";
 
     xhr.send();

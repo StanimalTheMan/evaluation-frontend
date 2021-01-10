@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card mx-auto mt-n10>
     <v-text-field v-model="username" label="username" required></v-text-field
     ><!--should add validation-->
     <v-text-field v-model="password" label="password" required></v-text-field>
@@ -23,7 +23,11 @@ export default {
           password: this.password,
         })
         .then(() => {
-          this.$router.push(this.$route.query.redirect);
+          if (this.$route.query.redirect) {
+            this.$router.push(this.$route.query.redirect);
+          } else {
+            this.$router.push({ name: "Dashboard" });
+          }
         });
     },
   },

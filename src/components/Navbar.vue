@@ -17,9 +17,9 @@
       <v-btn>Messages</v-btn>
       <v-btn>Send Message</v-btn>
       <v-btn>Contact</v-btn>
-      <v-btn v-if="!isAuthenticated"
-        ><router-link to="/login">Login</router-link></v-btn
-      >
+      <v-btn v-if="!isAuthenticated">
+        <router-link to="/login">Login</router-link>
+      </v-btn>
       <logout v-else></logout>
     </v-toolbar>
   </div>

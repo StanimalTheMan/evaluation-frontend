@@ -31,7 +31,8 @@ export default {
   },
   methods: {
     logout() {
-      (this.dialog = false), this.$store.dispatch("logout");
+      this.dialog = false;
+      this.$store.dispatch("logout").then(this.$router.push({ name: "Login" }));
     },
   },
 };
